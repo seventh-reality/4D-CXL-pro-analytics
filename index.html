@@ -8,8 +8,6 @@
     <meta name="keywords" content="Mispa CXL Pro, 3D model, Augmented Reality, medical devices, brochures, diagnostics">
     <meta name="author" content="Agappe Diagnostics">
     <meta name="robots" content="index, follow">
-     <link type="text/css" href="./styles.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="css/font-icons.css" type="text/css" />
     <!-- Open Graph Meta Tags (for Social Media) -->
     <meta property="og:title" content="Mispa CXL Pro - AR 3D Model">
     <meta property="og:description" content="View the Mispa CXL Pro in AR, download brochures, and explore features.">
@@ -17,15 +15,18 @@
     <meta property="og:url" content="https://www.agappe.com/mispa-cxl-pro">
     <meta property="og:type" content="website">
 
-    <<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YB6FWQS3VP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YB6FWQS3VP');
-</script>
+    
+    <!-- Styles -->
+    <link type="text/css" href="./styles.css" rel="stylesheet"/>
+    
+    <!-- Google Analytics & Tag Manager -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YB6FWQS3VP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YB6FWQS3VP');
+    </script>
     <!-- Microsoft Clarity -->
     <script type="text/javascript">
       (function(c,l,a,r,i,t,y){
@@ -35,7 +36,59 @@
       })(window, document, "clarity", "script", "qq1zz8zek6");
     </script>
 
-    <!-- Schema.org Structured Data -->
+    <!-- Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
+
+    <!-- Chatbot Styles -->
+    <style>
+      .chat-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+      }
+
+      .chat-box {
+        height: 200px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ddd;
+        padding: 5px;
+      }
+
+      .chat-input {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+      }
+
+      .send-btn {
+        width: 100%;
+        margin-top: 5px;
+        padding: 8px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .send-btn:hover {
+        background: #0056b3;
+      }
+
+      .animation-trigger {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+      }
+    </style>
+     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -64,14 +117,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-T6KXLGQC');</script>
 <!-- End Google Tag Manager -->
   </head>
-  <body>
 
+  <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6KXLGQC"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-    
     <div id="card">
-      <model-viewer id="model" src="CXL.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls poster="loading.gif" shadow-intensity="0.88" shadow-softness="1" exposure="1">
+      <!-- 3D Model Viewer -->
+      <model-viewer id="model" src="CXL.glb" ar ar-modes="webxr scene-viewer quick-look"
+        camera-controls poster="loading.gif" shadow-intensity="0.88"
+        shadow-softness="1" exposure="1" animation-name="Idle">
         <div class="progress-bar hide" slot="progress-bar">
             <div class="update-bar"></div>
         </div>
@@ -82,7 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li>Mispa CXL Pro</li>
       </ul>
       </model-viewer>
-       <section class="attributiontwo">
+      <section class="attributiontwo">
         <a href="https://www.agappe.com/media/catalog/product/file/Mispa_CXL_Pro.pdf" class="track-button" data-name="Brochure">
           <img src="Brochure_1.png" alt="Download Mispa CXL Pro Brochure" loading="lazy" />
         </a>
@@ -100,43 +155,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
     
       </section>
+      <!-- Chatbot -->
+      <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <input type="text" id="user-input" class="chat-input" placeholder="Ask about Mispa CXL Pro..." />
+        <button class="send-btn" onclick="sendMessage()">Ask</button>
+        <div class="animation-trigger">✨ Model animates on user question ✨</div>
+      </div>
     </div>
-    
+
+    <!-- JavaScript for Chatbot & Animation -->
     <script>
-      const modelViewer = document.getElementById('model');
-      
-      modelViewer.addEventListener('click', () => {
-        gtag('event', '3D_model_click', {
-          event_category: '3D Interaction',
-          event_label: 'User clicked on 3D model'
+      async function sendMessage() {
+        let userMessage = document.getElementById("user-input").value;
+        if (!userMessage) return;
+
+        // Display user message in chat
+        let chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
+
+        // Call AI API (replace with actual ChatGPT API)
+        let response = await fetch("https://api.openai.com/v1/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer YOUR_API_KEY", // Replace with your OpenAI API Key
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "gpt-4",
+            prompt: `User asked about Mispa CXL Pro: ${userMessage}`,
+            max_tokens: 100
+          })
         });
-      });
-      
-      modelViewer.addEventListener('camera-change', () => {
-        gtag('event', '3D_camera_change', {
-          event_category: '3D Interaction',
-          event_label: 'Camera position changed'
-        });
-      });
-      
-      modelViewer.addEventListener('scale-change', () => {
-        gtag('event', '3D_scale_change', {
-          event_category: '3D Interaction',
-          event_label: 'Model scaled by user'
-        });
-      });
-        modelViewer.addEventListener('rotation-change', () => {
-        gtag('event', '3D_rotation_change', {
-          event_category: '3D Interaction',
-          event_label: 'Model rotate by user'
-        });
-      });
+
+        let data = await response.json();
+        let botMessage = data.choices[0].text.trim();
+
+        // Display AI response in chat
+        chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
+
+        // Convert AI response to speech (Google TTS)
+        let speech = new SpeechSynthesisUtterance(botMessage);
+        speech.lang = "en-US";
+        speech.rate = 1;
+        speech.pitch = 1;
+        window.speechSynthesis.speak(speech);
+
+        // Trigger 3D model animation
+        let modelViewer = document.getElementById("model");
+        modelViewer.setAttribute("animation-name", "wave"); // Change to a valid animation name
+
+        // Clear input field
+        document.getElementById("user-input").value = "";
+
+        // Auto-scroll chatbox
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
     </script>
     
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
   </body>
 </html>
-
 <style>
   h5 {
     text-align: center;
@@ -194,4 +272,5 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   }
 </style>
+
 
