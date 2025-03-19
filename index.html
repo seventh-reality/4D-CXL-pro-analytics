@@ -272,5 +272,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   }
 </style>
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
+import 'leaflet/dist/leaflet.css';
+import './styles.css';
+import firebase from './firebase';
+
+const AnalyticsDashboard = () => {
+    const [userData, setUserData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const snapshot = await firebase.firestore().collection('analytics').get();
+            const data = snapshot.docs.map(doc => doc.data());
+            setUserData(data);
+        };
+        fetchData();
+    }, []);
+
+    const deviceData = userData.reduce((acc, user) => {
+        acc[user.device] = (acc[user.device] || 0) + 1;
+        return acc;
+    }, {});
+
+    const browserData = userData.reduce((acc, user) => {
+        acc[user.browser] = (acc[user.browser] || 0) + 1;
+        return acc;
+    }, {});
+
+    return (
+        <div className="dashboard">
+            <h2>Web AR Analytics</h2>
+            <div className="map-container">
+                <MapContainer center={[20, 0]} zoom={2} style={{ height: '300px', width: '100%' }}>
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    {userData.map((user, index) => (
+                        <Marker key={index} position={[user.lat, user.lng]}>
+                            <Popup>{user.city}, {user.country}</Popup>
+                        </Marker>
+                    ))}
+                </MapContainer>
+            </div>
+
+            <div className="charts">
+                <BarChart width={400} height={300} data={Object.entries(deviceData).map(([key, value]) => ({ name: key, users: value }))}>
+                    <XAxis dataKey="name" /><YAxis /><Tooltip />
+                    <Bar dataKey="users" fill="#8884d8" />
+                </BarChart>
+
+                <PieChart width={400} height={300}>
+                    <Pie data={Object.entries(browserData).map(([key, value]) => ({ name: key, value }))} cx="50%" cy="50%" outerRadius={80} fill="#82ca9d">
+                        {Object.entries(browserData).map(([key], index) => (
+                            <Cell key={index} fill={["#8884d8", "#82ca9d", "#ffc658"][index % 3]} />
+                        ))}
+                    </Pie>
+                </PieChart>
+            </div>
+        </div>
+    );
+};
+
+export default AnalyticsDashboard;
+
 
 
