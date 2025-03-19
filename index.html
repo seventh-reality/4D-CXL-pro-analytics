@@ -119,6 +119,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </head>
 
   <body>
+<script>
+  // Google Analytics Custom Event Tracking
+  document.querySelectorAll('.track-button').forEach(button => {
+    button.addEventListener('click', function () {
+      const action = this.getAttribute('data-name');
+      gtag('event', 'click', { 'event_category': 'User Interaction', 'event_label': action });
+    });
+  });
+
+  // Geo-Location Tracking (IP-based)
+  fetch('https://ipapi.co/json/')
+    .then(response => response.json())
+    .then(data => {
+      console.log('User Location:', data);
+      gtag('event', 'user_location', {
+        'event_category': 'Geo',
+        'event_label': `${data.city}, ${data.country_name}`
+      });
+    });
+
+  // Device & Browser Tracking
+  const userAgent = navigator.userAgent;
+  gtag('event', 'device_info', {
+    'event_category': 'Device',
+    'event_label': userAgent
+  });
+
+  // Track AR Model Interactions
+  document.getElementById("ar-button").addEventListener("click", function () {
+    gtag('event', 'view_in_ar', { 'event_category': 'AR Interaction', 'event_label': 'AR Model Viewed' });
+  });
+</script>
+    
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6KXLGQC"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
