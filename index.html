@@ -155,8 +155,8 @@
         clarity("set", "ChatbotInteraction", userMessage);
 
         let modelViewer = document.getElementById("model");
-        modelViewer.setAttribute("animation-name", "none");
-        setTimeout(() => { modelViewer.setAttribute("animation-name", "wave"); }, 1000);
+        modelViewer.setAttribute("animation-name", "Wave");
+        setTimeout(() => { modelViewer.setAttribute("animation-name", "wave"); }, 2000);
 
         document.getElementById("user-input").value = "";
         chatBox.scrollTop = chatBox.scrollHeight;
