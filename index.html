@@ -135,6 +135,9 @@
 
     <!-- JavaScript for Chatbot & Animation -->
     <script>
+      let animations = ["Waving", "Pulse", "Bounce"];  // List of 3 animations
+      let currentAnimation = 0;
+
       function toggleChat() {
         let chatContainer = document.getElementById("chat-container");
         chatContainer.style.display = chatContainer.style.display === "none" ? "block" : "none";
@@ -147,26 +150,20 @@
         let chatBox = document.getElementById("chat-box");
         chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
 
-        // Array of dynamic responses
-        const responses = [
-          "The Mispa CXL Pro is a cutting-edge diagnostic tool used for accurate eye diagnostics. It offers advanced technology for precision measurements.",
-          "The device is designed with ease of use in mind, making it ideal for healthcare professionals to conduct detailed eye exams.",
-          "Mispa CXL Pro is equipped with advanced optics and high-definition imaging for accurate results, supporting a variety of diagnostic tests.",
-          "This product integrates seamlessly into modern medical practices, ensuring reliability and ease of use with intuitive controls."
-        ];
-
-        // Pick a random response
-        let botMessage = responses[Math.floor(Math.random() * responses.length)];
+        // AI-like response logic based on question (simplified version)
+        let botMessage = getBotResponse(userMessage);
         chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
 
+        // Log the interaction for analytics
         gtag('event', 'chat_interaction', { 'event_category': 'Chatbot', 'event_label': userMessage });
         clarity("set", "ChatbotInteraction", userMessage);
 
         let modelViewer = document.getElementById("model");
 
-        // Play full animation
-        modelViewer.setAttribute("animation-name", "Wave");
-        
+        // Change the animation each time the user clicks "Ask"
+        modelViewer.setAttribute("animation-name", animations[currentAnimation]);
+        currentAnimation = (currentAnimation + 1) % animations.length;
+
         // Speech synthesis (voice-over)
         let utterance = new SpeechSynthesisUtterance(botMessage);
         speechSynthesis.speak(utterance);
@@ -176,14 +173,29 @@
           modelViewer.setAttribute("animation-name", "wave");
         }, 2000);
 
+        // Clear the input field
         document.getElementById("user-input").value = "";
         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      // Function to simulate AI responses based on the question
+      function getBotResponse(userMessage) {
+        userMessage = userMessage.toLowerCase();
+
+        // Predefined responses based on keywords in the user's message
+        if (userMessage.includes("device") || userMessage.includes("mispa cxl pro")) {
+          return "The Mispa CXL Pro is a state-of-the-art diagnostic tool designed for accurate eye health assessments.";
+        } else if (userMessage.includes("brochure")) {
+          return "You can download the brochure for more detailed information on the Mispa CXL Pro by visiting the provided link.";
+        } else if (userMessage.includes("technology") || userMessage.includes("advanced")) {
+          return "Mispa CXL Pro uses advanced technology to provide highly accurate measurements, ensuring reliability in diagnostics.";
+        } else {
+          return "I'm sorry, I couldn't understand your question. Can you please rephrase?";
+        }
       }
     </script>
   </body>
 </html>
-
-
 
 <style>
   h5 {
