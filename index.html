@@ -101,9 +101,26 @@
       </div>
       <button slot="ar-button" id="ar-button">View in 4D</button>
     </model-viewer>
-
+      <section class="attributiontwo">
+        <a href="https://www.agappe.com/media/catalog/product/file/Mispa_CXL_Pro.pdf" class="track-button" data-name="Brochure">
+          <img src="Brochure_1.png" alt="Download Mispa CXL Pro Brochure" loading="lazy" />
+        </a>
+        <a href="https://www.agappe.com/in" class="track-button" data-name="Website">
+          <img src="web_1.png" alt="Visit Agappe Official Website" loading="lazy" />
+        </a>
+        <a href="https://www.youtube.com/watch?v=gGXQ2YDdIFY" class="track-button" data-name="Video">
+          <img src="Video_1.png" alt="Watch Mispa CXL Pro Video on YouTube" loading="lazy" />
+        </a>
+        <a href="https://drive.google.com/file/d/1hFf5OK8XdV_q6UZ7WFcwiR3xrxWkUQ4Z/view?usp=sharing">
+          <img src="analytics_1.png" id="youtube-icon" class="icon" />
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSew4D56CSKpONvc30Ay7cLUY6FnPCOs7zK9IPYRLQWQPswbsg/viewform?usp=sf_link">
+          <img src="form_1.png" id="youtube-icon" class="icon" />
+        </a>
+        <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
+      </section>
     <!-- Chatbot Toggle Button -->
-    <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
+    
 
     <!-- Chatbot Container -->
     <div class="chat-container" id="chat-container" style="display: none;">
@@ -160,3 +177,60 @@
     </script>
   </body>
 </html>
+<style>
+  h5 {
+    text-align: center;
+    margin-top: -5px;
+    font-size: 9px;
+    color: #636363; /* Optional: Set text color to improve visibility */
+  }
+
+  .attributiontwo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+  
+  }
+
+  .attributiontwo span {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  .attributiontwo a {
+    margin: 10px;
+  }
+
+  .icon {
+    width: 35px;
+    height: 45px;
+    transition: transform 0.3s ease;
+  }
+
+  .icon:hover {
+    transform: scale(1.1); /* Optional: Add hover effect for images */
+  }
+
+  .attributiontwo img {
+    width: 35px;  /* Increased size */
+    height: 45px; /* Increased size */
+  }
+
+  .attributiontwo a {
+    text-decoration: none; /* Remove underline from links */
+  }
+
+  /* Add responsive styling for mobile */
+  @media (max-width: 600px) {
+    .attributiontwo {
+      padding: 15px;
+    }
+    .icon {
+      width: 30px;
+      height: 40px;
+    }
+  }
+</style>
