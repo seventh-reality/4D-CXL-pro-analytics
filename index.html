@@ -153,16 +153,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSew4D56CSKpONvc30Ay7cLUY6FnPCOs7zK9IPYRLQWQPswbsg/viewform?usp=sf_link">
           <img src="form_1.png" id="youtube-icon" class="icon" />
         </a>
+        <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
     
       </section>
-      <!-- Chatbot -->
-      <div class="chat-container">
-        <div class="chat-box" id="chat-box"></div>
-        <input type="text" id="user-input" class="chat-input" placeholder="Ask about Mispa CXL Pro..." />
-        <button class="send-btn" onclick="sendMessage()">Ask</button>
-        <div class="animation-trigger">✨ Model animates on user question ✨</div>
-      </div>
-    </div>
+     <!-- Chatbot Container -->
+<div class="chat-container" id="chat-container" style="display: none;">
+  <div class="chat-box" id="chat-box"></div>
+  <input type="text" id="user-input" class="chat-input" placeholder="Ask about Mispa CXL Pro..." />
+  <button class="send-btn" onclick="sendMessage()">Ask</button>
+  <div class="animation-trigger">✨ Model animates on user question ✨</div>
+</div>
+<script>
+  function toggleChat() {
+    let chatContainer = document.getElementById("chat-container");
+    if (chatContainer.style.display === "none") {
+      chatContainer.style.display = "block";
+    } else {
+      chatContainer.style.display = "none";
+    }
+  }
+
+  async function sendMessage() {
+    let userMessage = document.getElementById("user-input").value;
+    if (!userMessage) return;
+
+    let chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
+
+    // Simulating a bot response (replace with API call if needed)
+    let botMessage = "Here's some information about Mispa CXL Pro!";
+    chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
+
+    // Trigger 3D model animation
+    let modelViewer = document.getElementById("model");
+    modelViewer.setAttribute("animation-name", "wave");
+
+    document.getElementById("user-input").value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
 
     <!-- JavaScript for Chatbot & Animation -->
     <script>
