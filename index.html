@@ -147,11 +147,19 @@
         let chatBox = document.getElementById("chat-box");
         chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
 
-        let botMessage = "Here's some information about Mispa CXL Pro!";
+        // Array of dynamic responses
+        const responses = [
+          "The Mispa CXL Pro is a cutting-edge diagnostic tool used for accurate eye diagnostics. It offers advanced technology for precision measurements.",
+          "The device is designed with ease of use in mind, making it ideal for healthcare professionals to conduct detailed eye exams.",
+          "Mispa CXL Pro is equipped with advanced optics and high-definition imaging for accurate results, supporting a variety of diagnostic tests.",
+          "This product integrates seamlessly into modern medical practices, ensuring reliability and ease of use with intuitive controls."
+        ];
+
+        // Pick a random response
+        let botMessage = responses[Math.floor(Math.random() * responses.length)];
         chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
 
         gtag('event', 'chat_interaction', { 'event_category': 'Chatbot', 'event_label': userMessage });
-
         clarity("set", "ChatbotInteraction", userMessage);
 
         let modelViewer = document.getElementById("model");
@@ -174,6 +182,7 @@
     </script>
   </body>
 </html>
+
 
 
 <style>
