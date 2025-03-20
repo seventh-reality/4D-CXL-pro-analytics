@@ -155,8 +155,18 @@
         clarity("set", "ChatbotInteraction", userMessage);
 
         let modelViewer = document.getElementById("model");
+
+        // Play full animation
         modelViewer.setAttribute("animation-name", "Wave");
-        setTimeout(() => { modelViewer.setAttribute("animation-name", "wave"); }, 2000);
+        
+        // Speech synthesis (voice-over)
+        let utterance = new SpeechSynthesisUtterance(botMessage);
+        speechSynthesis.speak(utterance);
+
+        // Reset animation after some time (if needed)
+        setTimeout(() => {
+          modelViewer.setAttribute("animation-name", "wave");
+        }, 2000);
 
         document.getElementById("user-input").value = "";
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -164,6 +174,7 @@
     </script>
   </body>
 </html>
+
 
 <style>
   h5 {
