@@ -195,6 +195,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- JavaScript for Chatbot & Animation -->
     <script>
+      function sendMessage() {
+    let userMessage = document.getElementById("user-input").value;
+    if (!userMessage) return;
+
+    let chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
+
+    // Simulating a bot response (replace this with an actual API call)
+    let botMessage = "Here's some information about Mispa CXL Pro!";
+    chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
+
+    // Get the 3D model
+    let modelViewer = document.getElementById("model");
+
+    // Reset animation before playing
+    modelViewer.setAttribute("animation-name", "none");
+
+    // Use a small delay before setting the animation to ensure reset works
+    setTimeout(() => {
+        modelViewer.setAttribute("animation-name", "wave"); // Change "wave" to your actual animation
+    }, 100);
+
+    // Clear input field
+    document.getElementById("user-input").value = "";
+
+    // Auto-scroll chatbox to the latest message
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
       async function sendMessage() {
         let userMessage = document.getElementById("user-input").value;
         if (!userMessage) return;
