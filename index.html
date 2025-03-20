@@ -15,7 +15,9 @@
     <meta property="og:image" content="https://www.agappe.com/path-to-your-image.jpg">
     <meta property="og:url" content="https://www.agappe.com/mispa-cxl-pro">
     <meta property="og:type" content="website">
+    
     <link type="text/css" href="./styles.css" rel="stylesheet"/>
+
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YB6FWQS3VP"></script>
     <script>
@@ -33,9 +35,6 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "qq1zz8zek6");
     </script>
-
-    <!-- Styles -->
-    <link type="text/css" href="./styles.css" rel="stylesheet"/>
 
     <!-- Model Viewer -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
@@ -93,36 +92,38 @@
   <body>
     <!-- 3D Model Viewer -->
     <model-viewer id="model" src="Wave.glb" ar ar-modes="webxr scene-viewer quick-look"
-       <button class="Hotspot" slot="hotspot-1" data-surface="0 0 11274 11271 11270 0.131 0.258 0.612" data-visibility-attribute="visible">
-        <div class="HotspotAnnotation">click the lable</div>
-        </button>
-        camera-controls poster="loading.gif" shadow-intensity="0.88"
-        shadow-softness="1" exposure="1" animation-name="Idle">
+      camera-controls poster="loading.gif" shadow-intensity="0.88"
+      shadow-softness="1" exposure="1" animation-name="Idle">
+      
+      <button class="Hotspot" slot="hotspot-1">
+        <div class="HotspotAnnotation">Click the label</div>
+      </button>
+
       <div class="progress-bar hide" slot="progress-bar">
         <div class="update-bar"></div>
       </div>
-      <button slot="ar-button" id="ar-button">View in 4D</button>
+
+      <button slot="ar-button" id="ar-button">View in AR</button>
     </model-viewer>
-      <section class="attributiontwo">
-        <a href="https://www.agappe.com/media/catalog/product/file/Mispa_CXL_Pro.pdf" class="track-button" data-name="Brochure">
-          <img src="Brochure_1.png" alt="Download Mispa CXL Pro Brochure" loading="lazy" />
-        </a>
-        <a href="https://www.agappe.com/in" class="track-button" data-name="Website">
-          <img src="web_1.png" alt="Visit Agappe Official Website" loading="lazy" />
-        </a>
-        <a href="https://www.youtube.com/watch?v=gGXQ2YDdIFY" class="track-button" data-name="Video">
-          <img src="Video_1.png" alt="Watch Mispa CXL Pro Video on YouTube" loading="lazy" />
-        </a>
-        <a href="https://drive.google.com/file/d/1hFf5OK8XdV_q6UZ7WFcwiR3xrxWkUQ4Z/view?usp=sharing">
-          <img src="analytics_1.png" id="youtube-icon" class="icon" />
-        </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSew4D56CSKpONvc30Ay7cLUY6FnPCOs7zK9IPYRLQWQPswbsg/viewform?usp=sf_link">
-          <img src="form_1.png" id="youtube-icon" class="icon" />
-        </a>
-        <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
-      </section>
-    <!-- Chatbot Toggle Button -->
-    
+
+    <section class="attributiontwo">
+      <a href="https://www.agappe.com/media/catalog/product/file/Mispa_CXL_Pro.pdf" class="track-button" data-name="Brochure">
+        <img src="Brochure_1.png" alt="Download Mispa CXL Pro Brochure" loading="lazy" />
+      </a>
+      <a href="https://www.agappe.com/in" class="track-button" data-name="Website">
+        <img src="web_1.png" alt="Visit Agappe Official Website" loading="lazy" />
+      </a>
+      <a href="https://www.youtube.com/watch?v=gGXQ2YDdIFY" class="track-button" data-name="Video">
+        <img src="Video_1.png" alt="Watch Mispa CXL Pro Video on YouTube" loading="lazy" />
+      </a>
+      <a href="https://drive.google.com/file/d/1hFf5OK8XdV_q6UZ7WFcwiR3xrxWkUQ4Z/view?usp=sharing">
+        <img src="analytics_1.png" id="youtube-icon" class="icon" />
+      </a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSew4D56CSKpONvc30Ay7cLUY6FnPCOs7zK9IPYRLQWQPswbsg/viewform?usp=sf_link">
+        <img src="form_1.png" id="youtube-icon" class="icon" />
+      </a>
+      <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
+    </section>
 
     <!-- Chatbot Container -->
     <div class="chat-container" id="chat-container" style="display: none;">
@@ -146,39 +147,24 @@
         let chatBox = document.getElementById("chat-box");
         chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
 
-        // Simulated bot response
         let botMessage = "Here's some information about Mispa CXL Pro!";
         chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
 
-        // Google Analytics event tracking
-        gtag('event', 'chat_interaction', {
-          'event_category': 'Chatbot',
-          'event_label': userMessage
-        });
+        gtag('event', 'chat_interaction', { 'event_category': 'Chatbot', 'event_label': userMessage });
 
-        // Microsoft Clarity event tracking
         clarity("set", "ChatbotInteraction", userMessage);
 
-        // Get the 3D model
         let modelViewer = document.getElementById("model");
-
-        // Reset animation before playing
         modelViewer.setAttribute("animation-name", "none");
+        setTimeout(() => { modelViewer.setAttribute("animation-name", "wave"); }, 100);
 
-        // Use a small delay before setting the animation to ensure reset works
-        setTimeout(() => {
-          modelViewer.setAttribute("animation-name", "wave"); // Change to your actual animation name
-        }, 100);
-
-        // Clear input field
         document.getElementById("user-input").value = "";
-
-        // Auto-scroll chatbox
         chatBox.scrollTop = chatBox.scrollHeight;
       }
     </script>
   </body>
 </html>
+
 <style>
   h5 {
     text-align: center;
