@@ -151,6 +151,9 @@
             let modelViewer = document.getElementById("model");
             modelViewer.setAttribute("animation-name", animations[currentAnimation]);
             currentAnimation = (currentAnimation + 1) % animations.length;
+             if (currentAnimation >= animations.length) {
+                currentAnimation = 0;
+            }
 
             let utterance = new SpeechSynthesisUtterance(botMessage);
             speechSynthesis.speak(utterance);
