@@ -129,61 +129,87 @@
     </div>
 
     <script>
-        let animations = ["Waving", "PulledFromSeat", "Jumping"];
-        let currentAnimation = 0;
+    let animations = ["Waving", "PulledFromSeat", "Jumping"];
+    let currentAnimation = 0;
 
-        function toggleChat() {
-            let chatContainer = document.getElementById("chat-container");
-            chatContainer.style.display = chatContainer.style.display === "none" ? "block" : "none";
+    function toggleChat() {
+        let chatContainer = document.getElementById("chat-container");
+        chatContainer.style.display = chatContainer.style.display === "none" ? "block" : "none";
+    }
+
+    function sendMessage() {
+        let userMessage = document.getElementById("user-input").value.trim();
+        if (!userMessage) return;
+
+        let chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
+
+        let botMessage = getBotResponse(userMessage);
+        chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
+
+        gtag('event', 'chat_interaction', { 'event_category': 'Chatbot', 'event_label': userMessage });
+        clarity("set", "ChatbotInteraction", userMessage);
+
+        let modelViewer = document.getElementById("model");
+
+        // Set the animation
+        modelViewer.setAttribute("animation-name", animations[currentAnimation]);
+
+        // Play the animation
+        modelViewer.play();  // Start the animation
+
+        // Stop the animation after 11.25 seconds (11250ms) - adjust time as needed
+        setTimeout(() => {
+            modelViewer.pause();  // Stop the animation after the set duration
+        }, 11250);  // Time in milliseconds (11.25 seconds)
+
+        currentAnimation = (currentAnimation + 1) % animations.length; // Cycle through animations
+
+        // Optionally, display a button or trigger an action after the animation
+        handleButtonDisplay(currentAnimation);
+
+        let utterance = new SpeechSynthesisUtterance(botMessage);
+        speechSynthesis.speak(utterance);
+
+        setTimeout(() => {
+            modelViewer.setAttribute("animation-name", "Waving");  // Reset to default animation
+        }, 10000);  // Reset animation after 10 seconds (10000ms)
+
+        document.getElementById("user-input").value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function handleButtonDisplay(indx) {
+        // Add your logic for button display after animation
+        console.log(`Handle button display for animation index: ${indx}`);
+        // Example: Show the "View in AR" button based on the animation index
+        if (indx === 0) {
+            document.getElementById('ar-button').style.display = "block";  // Show AR button for "Waving"
+        } else {
+            document.getElementById('ar-button').style.display = "none";  // Hide AR button for others
         }
+    }
 
-        function sendMessage() {
-            let userMessage = document.getElementById("user-input").value.trim();
-            if (!userMessage) return;
-
-            let chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
-
-            let botMessage = getBotResponse(userMessage);
-            chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
-
-            gtag('event', 'chat_interaction', { 'event_category': 'Chatbot', 'event_label': userMessage });
-            clarity("set", "ChatbotInteraction", userMessage);
-
-            let modelViewer = document.getElementById("model");
-            modelViewer.setAttribute("animation-name", animations[currentAnimation]);
-            currentAnimation = (currentAnimation + 1) % animations.length;
-
-            let utterance = new SpeechSynthesisUtterance(botMessage);
-            speechSynthesis.speak(utterance);
-
-            setTimeout(() => {
-                modelViewer.setAttribute("animation-name", "Waving");
-            }, 10000);
-
-            document.getElementById("user-input").value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
+    function getBotResponse(userMessage) {
+        userMessage = userMessage.toLowerCase();
+        if (userMessage.includes("device") || userMessage.includes("mispa cxl pro")) {
+            return "The Mispa CXL Pro is a state-of-the-art diagnostic tool designed for accurate eye health assessments.";
+        } else if (userMessage.includes("brochure")) {
+            return "You can download the brochure for more detailed information on the Mispa CXL Pro by visiting the provided link.";
+        } else if (userMessage.includes("technology") || userMessage.includes("advanced")) {
+            return "Mispa CXL Pro uses advanced technology to provide highly accurate measurements, ensuring reliability in diagnostics.";
+        } else if (userMessage.includes("animation")) {
+            return "The 3D model will animate in response to your question.";
         }
-
-        function getBotResponse(userMessage) {
-            userMessage = userMessage.toLowerCase();
-            if (userMessage.includes("device") || userMessage.includes("mispa cxl pro")) {
-                return "The Mispa CXL Pro is a state-of-the-art diagnostic tool designed for accurate eye health assessments.";
-            } else if (userMessage.includes("brochure")) {
-                return "You can download the brochure for more detailed information on the Mispa CXL Pro by visiting the provided link.";
-            } else if (userMessage.includes("technology") || userMessage.includes("advanced")) {
-                return "Mispa CXL Pro uses advanced technology to provide highly accurate measurements, ensuring reliability in diagnostics.";
-            } else if (userMessage.includes("animation")) {
-                return "The 3D model will animate in response to your question.";
-            }
-            else if (userMessage.includes("hello") || userMessage.includes("hi") || userMessage.includes("hey")) {
-                return "Hello! How can I assist you today?";
-            }
-            else {
-                return "I'm sorry, I couldn't understand your question. Can you please rephrase?";
-            }
+        else if (userMessage.includes("hello") || userMessage.includes("hi") || userMessage.includes("hey")) {
+            return "Hello! How can I assist you today?";
         }
-    </script>
+        else {
+            return "I'm sorry, I couldn't understand your question. Can you please rephrase?";
+        }
+    }
+</script>
+
 </body>
 </html>
 
