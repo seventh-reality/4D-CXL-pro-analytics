@@ -25,118 +25,27 @@
         gtag('config', 'G-YB6FWQS3VP');
     </script>
 
-    <script>
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "qq1zz8zek6");
-    </script>
-
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
-
-    <style>
-        .chat-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-        }
-
-        .chat-box {
-            height: 200px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
-            padding: 5px;
-        }
-
-        .chat-input {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .send-btn {
-            margin-top: 5px;
-            padding: 8px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .send-btn:hover {
-            background: #0056b3;
-        }
-
-        .animation-trigger {
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
 </head>
 
 <body>
     <!-- 3D Model Viewer -->
     <model-viewer id="model" src="Wave.glb" ar ar-modes="webxr scene-viewer quick-look"
         camera-controls poster="loading.gif" shadow-intensity="0.88"
-        shadow-softness="1" exposure="1" animation-name="Waving">
-
-        <button class="Hotspot" slot="hotspot-1">
-            <div class="HotspotAnnotation">Click the label</div>
-        </button>
-
-        <div class="progress-bar hide" slot="progress-bar">
-            <div class="update-bar"></div>
-        </div>
-
-        <button slot="ar-button" id="ar-button">View in AR</button>
+        shadow-softness="1" exposure="1">
     </model-viewer>
-
-    <section class="attributiontwo">
-        <a href="https://www.agappe.com/media/catalog/product/file/Mispa_CXL_Pro.pdf" class="track-button" data-name="Brochure">
-            <img src="Brochure_1.png" alt="Download Mispa CXL Pro Brochure" loading="lazy" />
-        </a>
-        <a href="https://www.agappe.com/in" class="track-button" data-name="Website">
-            <img src="web_1.png" alt="Visit Agappe Official Website" loading="lazy" />
-        </a>
-        <a href="https://www.youtube.com/watch?v=gGXQ2YDdIFY" class="track-button" data-name="Video">
-            <img src="Video_1.png" alt="Watch Mispa CXL Pro Video on YouTube" loading="lazy" />
-        </a>
-        <a href="https://drive.google.com/file/d/1hFf5OK8XdV_q6UZ7WFcwiR3xrxWkUQ4Z/view?usp=sharing">
-            <img src="analytics_1.png" id="youtube-icon" class="icon" />
-        </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSew4D56CSKpONvc30Ay7cLUY6FnPCOs7zK9IPYRLQWQPswbsg/viewform?usp=sf_link">
-            <img src="form_1.png" id="youtube-icon" class="icon" />
-        </a>
-        <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
-    </section>
 
     <!-- Chatbot Container -->
     <div class="chat-container" id="chat-container" style="display: none;">
         <div class="chat-box" id="chat-box"></div>
         <input type="text" id="user-input" class="chat-input" placeholder="Ask about Mispa CXL Pro..." />
         <button class="send-btn" onclick="sendMessage()">Ask</button>
-        <div class="animation-trigger">✨ Model animates on user question ✨</div>
     </div>
 
     <script>
     let animations = ["Waving", "PulledFromSeat", "Jumping"];
     let currentAnimation = 0;
-
-    function toggleChat() {
-        let chatContainer = document.getElementById("chat-container");
-        chatContainer.style.display = chatContainer.style.display === "none" ? "block" : "none";
-    }
-
+    
     function sendMessage() {
         let userMessage = document.getElementById("user-input").value.trim();
         if (!userMessage) return;
@@ -147,47 +56,22 @@
         let botMessage = getBotResponse(userMessage);
         chatBox.innerHTML += `<p><b>Bot:</b> ${botMessage}</p>`;
 
-        gtag('event', 'chat_interaction', { 'event_category': 'Chatbot', 'event_label': userMessage });
-        clarity("set", "ChatbotInteraction", userMessage);
-
         let modelViewer = document.getElementById("model");
 
-        // Set the animation
-        modelViewer.setAttribute("animation-name", animations[currentAnimation]);
-
-        // Play the animation
-        modelViewer.play();  // Start the animation
-
-        // Stop the animation after 11.25 seconds (11250ms) - adjust time as needed
-        setTimeout(() => {
-            modelViewer.pause();  // Stop the animation after the set duration
-        }, 11250);  // Time in milliseconds (11.25 seconds)
-
-        currentAnimation = (currentAnimation + 1) % animations.length; // Cycle through animations
-
-        // Optionally, display a button or trigger an action after the animation
-        handleButtonDisplay(currentAnimation);
-
         let utterance = new SpeechSynthesisUtterance(botMessage);
-        speechSynthesis.speak(utterance);
+        utterance.onstart = function() {
+            modelViewer.setAttribute("animation-name", animations[currentAnimation]);
+            modelViewer.play();
+        };
+        utterance.onend = function() {
+            modelViewer.pause();
+        };
 
-        setTimeout(() => {
-            modelViewer.setAttribute("animation-name", "Waving");  // Reset to default animation
-        }, 10000);  // Reset animation after 10 seconds (10000ms)
+        speechSynthesis.speak(utterance);
+        currentAnimation = (currentAnimation + 1) % animations.length;
 
         document.getElementById("user-input").value = "";
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function handleButtonDisplay(indx) {
-        // Add your logic for button display after animation
-        console.log(`Handle button display for animation index: ${indx}`);
-        // Example: Show the "View in AR" button based on the animation index
-        if (indx === 0) {
-            document.getElementById('ar-button').style.display = "block";  // Show AR button for "Waving"
-        } else {
-            document.getElementById('ar-button').style.display = "none";  // Hide AR button for others
-        }
     }
 
     function getBotResponse(userMessage) {
@@ -200,18 +84,16 @@
             return "Mispa CXL Pro uses advanced technology to provide highly accurate measurements, ensuring reliability in diagnostics.";
         } else if (userMessage.includes("animation")) {
             return "The 3D model will animate in response to your question.";
-        }
-        else if (userMessage.includes("hello") || userMessage.includes("hi") || userMessage.includes("hey")) {
+        } else if (userMessage.includes("hello") || userMessage.includes("hi") || userMessage.includes("hey")) {
             return "Hello! How can I assist you today?";
-        }
-        else {
+        } else {
             return "I'm sorry, I couldn't understand your question. Can you please rephrase?";
         }
     }
-</script>
-
+    </script>
 </body>
 </html>
+
 
 
 
