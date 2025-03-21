@@ -128,7 +128,7 @@
 
     <script>
         let animations = ["Waving", "Pulled From Seat", "Jumping"];
-        let currentAnimation = 0;
+        let currentAnimation = 2;
 
         function toggleChat() {
             let chatContainer = document.getElementById("chat-container");
@@ -152,7 +152,7 @@
             modelViewer.setAttribute("animation-name", animations[currentAnimation]);
             currentAnimation = (currentAnimation + 1) % animations.length;
              if (currentAnimation >= animations.length) {
-                currentAnimation = 0;
+                currentAnimation = 2;
             }
 
             let utterance = new SpeechSynthesisUtterance(botMessage);
@@ -160,7 +160,7 @@
 
             setTimeout(() => {
                 modelViewer.setAttribute("animation-name", "Waving");
-            }, 2000);
+            }, 10000);
 
             document.getElementById("user-input").value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
