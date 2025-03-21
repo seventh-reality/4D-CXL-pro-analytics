@@ -85,6 +85,7 @@
 </head>
 
 <body>
+    <!-- 3D Model Viewer -->
     <model-viewer id="model" src="Wave.glb" ar ar-modes="webxr scene-viewer quick-look"
         camera-controls poster="loading.gif" shadow-intensity="0.88"
         shadow-softness="1" exposure="1" animation-name="Waving">
@@ -119,6 +120,7 @@
         <button id="toggle-chat" class="send-btn" onclick="toggleChat()">Toggle Chat</button>
     </section>
 
+    <!-- Chatbot Container -->
     <div class="chat-container" id="chat-container" style="display: none;">
         <div class="chat-box" id="chat-box"></div>
         <input type="text" id="user-input" class="chat-input" placeholder="Ask about Mispa CXL Pro..." />
@@ -127,8 +129,8 @@
     </div>
 
     <script>
-        let animations = ["Waving", "Pulled From Seat", "Jumping"];
-        let currentAnimation = 2;
+        let animations = ["Waving", "PulledFromSeat", "Jumping"];
+        let currentAnimation = 0;
 
         function toggleChat() {
             let chatContainer = document.getElementById("chat-container");
@@ -151,9 +153,6 @@
             let modelViewer = document.getElementById("model");
             modelViewer.setAttribute("animation-name", animations[currentAnimation]);
             currentAnimation = (currentAnimation + 1) % animations.length;
-             if (currentAnimation >= animations.length) {
-                currentAnimation = 2;
-            }
 
             let utterance = new SpeechSynthesisUtterance(botMessage);
             speechSynthesis.speak(utterance);
@@ -177,7 +176,7 @@
             } else if (userMessage.includes("animation")) {
                 return "The 3D model will animate in response to your question.";
             }
-             else if (userMessage.includes("hello") || userMessage.includes("hi") || userMessage.includes("hey")) {
+            else if (userMessage.includes("hello") || userMessage.includes("hi") || userMessage.includes("hey")) {
                 return "Hello! How can I assist you today?";
             }
             else {
@@ -187,6 +186,7 @@
     </script>
 </body>
 </html>
+
 
 
 <style>
